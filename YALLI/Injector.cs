@@ -65,7 +65,7 @@ namespace YALLI
                 return IntPtr.Zero;
 
             return Kernel32
-                .CreateRemoteThread(processHandle, IntPtr.Zero, 0, _loadLibraryProc, pArg, 0, IntPtr.Zero);
+                .CreateRemoteThreadWrapped(processHandle, _loadLibraryProc, pArg);
         }
 
         public static bool UnloadModule(

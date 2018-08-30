@@ -38,7 +38,7 @@ namespace YALLI.Win32
             out int lpNumberOfBytesWritten);
 
         [DllImport("kernel32.dll")]
-        internal static extern IntPtr CreateRemoteThread(
+        private static extern IntPtr CreateRemoteThread(
             IntPtr hProcess,
             IntPtr lpThreadAttributes,
             uint dwStackSize,
@@ -46,6 +46,21 @@ namespace YALLI.Win32
             IntPtr lpParameter,
             uint dwCreationFlags,
             IntPtr lpThreadId);
+
+        internal static IntPtr CreateRemoteThreadWrapped(
+            IntPtr hProcess,
+            IntPtr lpStartAddress,
+            IntPtr lpParameter)
+        {
+            return CreateRemoteThread(
+                hProcess, 
+                IntPtr.Zero, 
+                0, 
+                lpStartAddress, 
+                lpParameter, 
+                0, 
+                IntPtr.Zero);
+        }
 
         [DllImport("kernel32.dll")]
         internal static extern bool CloseHandle(
