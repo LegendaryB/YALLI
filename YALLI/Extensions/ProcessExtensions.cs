@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.IO;
 using YALLI.Win32;
 using YALLI.Win32.Flags;
 
@@ -8,18 +7,6 @@ namespace YALLI.Extensions
 {
     public static class ProcessExtensions
     {
-        private static readonly IntPtr LoadLibraryProc;
-
-        static ProcessExtensions()
-        {
-            var kernel32ModuleHandle = Kernel32.GetModuleHandle(
-                "kernel32.dll");
-
-            LoadLibraryProc = Kernel32.GetProcAddress(
-                kernel32ModuleHandle,
-                "LoadLibraryA");
-        }
-
         internal static IntPtr OpenProcess(
             this Process process,
             ProcessAccess processAccess)
@@ -29,7 +16,7 @@ namespace YALLI.Extensions
                 false,
                 process.Id);
         }
-        
+
         public static IntPtr LoadModule(
             this Process process,
             string moduleName)
@@ -38,11 +25,12 @@ namespace YALLI.Extensions
                 moduleName,
                 nameof(moduleName));
 
-            if (!File.Exists(moduleName))
-                throw new FileNotFoundException();
+            var hProcess = OpenProcess(
+                process,
+                ProcessAccess.PROCESS_ALL_ACCESS);
 
             return ProcessModulesHandler.LoadModule(
-                process,
+                hProcess,
                 moduleName);
         }
 
@@ -54,8 +42,12 @@ namespace YALLI.Extensions
                 moduleName,
                 nameof(moduleName));
 
-            return ProcessModulesHandler.UnloadModule(
+            var hProcess = OpenProcess(
                 process,
+                ProcessAccess.PROCESS_ALL_ACCESS);
+
+            return ProcessModulesHandler.UnloadModule(
+                hProcess,
                 moduleName);
         }
     }

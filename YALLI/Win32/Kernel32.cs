@@ -30,6 +30,24 @@ namespace YALLI.Win32
             MemoryProtection flProtect);
 
         [DllImport("kernel32.dll")]
+        internal static extern bool WriteProcessMemory(
+            IntPtr hProcess,
+            IntPtr lpBaseAddress,
+            byte[] lpBuffer,
+            IntPtr nSize,
+            out int lpNumberOfBytesWritten);
+
+        [DllImport("kernel32.dll")]
+        internal static extern IntPtr CreateRemoteThread(
+            IntPtr hProcess,
+            IntPtr lpThreadAttributes,
+            uint dwStackSize,
+            IntPtr lpStartAddress,
+            IntPtr lpParameter,
+            uint dwCreationFlags,
+            IntPtr lpThreadId);
+
+        [DllImport("kernel32.dll")]
         internal static extern bool CloseHandle(
             IntPtr hObject);
     }
