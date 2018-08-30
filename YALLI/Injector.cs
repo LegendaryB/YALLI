@@ -18,17 +18,7 @@ namespace YALLI
             ProcessAccess.PROCESS_VM_WRITE;
 
         private static readonly IntPtr _loadLibraryProc;
-        private static readonly IntPtr _freeLibraryProc;
         private static readonly int _charMarshalSize;
-
-        [StructLayout(LayoutKind.Sequential, Pack = 1)]
-        private struct FreeLibraryAndExitThreadParameters
-        {
-            public IntPtr hModule;
-
-            [MarshalAs(UnmanagedType.I4)]
-            public int dwExitCode;
-        }
 
         static Injector()
         {
@@ -38,10 +28,6 @@ namespace YALLI
             _loadLibraryProc = Kernel32.GetProcAddress(
                 kernel32ModuleHandle,
                 "LoadLibraryA");
-
-            _freeLibraryProc = Kernel32.GetProcAddress(
-                kernel32ModuleHandle,
-                "FreeLibraryAndExitThread");
 
             _charMarshalSize = Marshal.SizeOf<char>();
         }
