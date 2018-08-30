@@ -52,9 +52,7 @@ namespace YALLI
                 moduleName,
                 nameof(moduleName));
 
-            var processHandle = GetProcessHandle(
-                targetProcess,
-                DESIRED_PROCESS_ACCESS);
+            var processHandle = GetProcessHandle(targetProcess);
 
             if (processHandle.IsNULL())
                 return IntPtr.Zero;
@@ -131,18 +129,17 @@ namespace YALLI
             if (string.IsNullOrWhiteSpace(moduleName))
                 return moduleName;
 
-            if (moduleName.EndsWith(".dll"))
-                return $"{moduleName}.dll";
+            if (!moduleName.EndsWith(".dll"))
+                moduleName = $"{moduleName}.dll";
 
-            return moduleName.ToUpper();
+            return moduleName;
         }
 
         private static IntPtr GetProcessHandle(
-            Process process,
-            ProcessAccess desiredAccess)
+            Process process)
         {
             return Kernel32.OpenProcess(
-                desiredAccess,
+                DESIRED_PROCESS_ACCESS,
                 false,
                 process.Id);
         }
