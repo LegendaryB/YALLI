@@ -11,4 +11,4 @@ YALLI is a simple dll injector which uses LoadLibrary in combination with Create
 
 ## License
 
-This project is licensed under the MIT v3.0 - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the MIT - see the [LICENSE.md](LICENSE.md) file for details
