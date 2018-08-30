@@ -8,6 +8,18 @@ namespace YALLI.Extensions
 {
     public static class ProcessExtensions
     {
+        private static readonly IntPtr LoadLibraryProc;
+
+        static ProcessExtensions()
+        {
+            var kernel32ModuleHandle = Kernel32.GetModuleHandle(
+                "kernel32.dll");
+
+            LoadLibraryProc = Kernel32.GetProcAddress(
+                kernel32ModuleHandle,
+                "LoadLibraryA");
+        }
+
         internal static IntPtr OpenProcess(
             this Process process,
             ProcessAccess processAccess)
@@ -16,28 +28,35 @@ namespace YALLI.Extensions
                 processAccess,
                 false,
                 process.Id);
-        }  
-        
-        public static IntPtr LoadLibrary(
-            this Process process,
-            string fileName)
-        {
-            Argument.IsNotNullOrWhitespace(
-                fileName,
-                nameof(fileName));
-
-            if (!File.Exists(fileName))
-                throw new FileNotFoundException();
-
-
-            return IntPtr.Zero;
         }
-
-        public static void FreeLibrary(
+        
+        public static IntPtr LoadModule(
             this Process process,
             string moduleName)
         {
+            Argument.IsNotNullOrWhitespace(
+                moduleName,
+                nameof(moduleName));
 
+            if (!File.Exists(moduleName))
+                throw new FileNotFoundException();
+
+            return ProcessModulesHandler.LoadModule(
+                process,
+                moduleName);
+        }
+
+        public static bool UnloadModule(
+            this Process process,
+            string moduleName)
+        {
+            Argument.IsNotNullOrWhitespace(
+                moduleName,
+                nameof(moduleName));
+
+            return ProcessModulesHandler.UnloadModule(
+                process,
+                moduleName);
         }
     }
 }

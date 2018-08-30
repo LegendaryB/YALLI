@@ -3,7 +3,7 @@
 namespace YALLI.Win32.Flags
 {
     [Flags]
-    internal enum ProcessAccess
+    internal enum ProcessAccess : uint
     {
         PROCESS_ALL_ACCESS = 0x1F0FFF,
         PROCESS_CREATE_PROCESS = 0x80,
