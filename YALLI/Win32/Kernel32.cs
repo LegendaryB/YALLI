@@ -1,15 +1,13 @@
-﻿using LoadLibraryDLLInjector.Win32.Flags;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Runtime.InteropServices;
-using System.Text;
+using YALLI.Win32.Flags;
 
-namespace LoadLibraryDLLInjector.Win32
+namespace YALLI.Win32
 {
     internal static class Kernel32
     {
         [DllImport("kernel32")]
-        private static extern IntPtr OpenProcess(
+        internal static extern IntPtr OpenProcess(
             ProcessAccess dwDesiredAccess,
             bool bInheritHandle,
             int dwProcessId);

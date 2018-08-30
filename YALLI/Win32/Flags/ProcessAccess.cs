@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LoadLibraryDLLInjector.Win32.Flags
+namespace YALLI.Win32.Flags
 {
     [Flags]
     internal enum ProcessAccess

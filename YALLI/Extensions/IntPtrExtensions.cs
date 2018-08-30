@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LoadLibraryDLLInjector.Extensions
+namespace YALLI.Extensions
 {
     internal static class IntPtrExtensions
     {
