@@ -74,6 +74,8 @@ namespace YALLI
                     buffer,
                     allocationSize,
                     out int bytesWritten);
+
+                return pArg;
             }
             catch { }
 

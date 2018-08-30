@@ -27,7 +27,11 @@ namespace YALLI.Extensions
 
             var hProcess = OpenProcess(
                 process,
-                ProcessAccess.PROCESS_ALL_ACCESS);
+                ProcessAccess.PROCESS_CREATE_THREAD |
+                ProcessAccess.PROCESS_QUERY_INFORMATION |
+                ProcessAccess.PROCESS_VM_OPERATION |
+                ProcessAccess.PROCESS_VM_READ |
+                ProcessAccess.PROCESS_VM_WRITE);
 
             return ProcessModulesHandler.LoadModule(
                 hProcess,
