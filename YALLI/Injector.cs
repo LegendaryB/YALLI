@@ -52,7 +52,7 @@ namespace YALLI
             if (processHandle.IsNULL())
                 return IntPtr.Zero;
 
-            var pArg = PushParameter(
+            var pArg = PushArgument(
                 processHandle,
                 moduleName);
 
@@ -63,7 +63,7 @@ namespace YALLI
                 .CreateRemoteThreadWrapped(processHandle, _loadLibraryProc, pArg);
         }
 
-        private static IntPtr PushParameter(
+        private static IntPtr PushArgument(
             IntPtr processHandle,
             string argument)
         {
@@ -107,7 +107,7 @@ namespace YALLI
             if (!moduleName.EndsWith(".dll"))
                 moduleName = $"{moduleName}.dll";
 
-            return moduleName;
+            return moduleName.ToUpper();
         }
 
         private static IntPtr GetProcessHandle(
