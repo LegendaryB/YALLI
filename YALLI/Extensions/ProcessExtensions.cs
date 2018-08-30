@@ -13,14 +13,5 @@ namespace YALLI.Extensions
                 process,
                 moduleName);
         }
-
-        public static bool UnloadModule(
-            this Process process,
-            string moduleName)
-        {
-            return Injector.UnloadModule(
-                process,
-                moduleName);
-        }
     }
 }

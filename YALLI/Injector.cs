@@ -21,6 +21,15 @@ namespace YALLI
         private static readonly IntPtr _freeLibraryProc;
         private static readonly int _charMarshalSize;
 
+        [StructLayout(LayoutKind.Sequential, Pack = 1)]
+        private struct FreeLibraryAndExitThreadParameters
+        {
+            public IntPtr hModule;
+
+            [MarshalAs(UnmanagedType.I4)]
+            public int dwExitCode;
+        }
+
         static Injector()
         {
             var kernel32ModuleHandle = Kernel32.GetModuleHandle(
@@ -32,7 +41,7 @@ namespace YALLI
 
             _freeLibraryProc = Kernel32.GetProcAddress(
                 kernel32ModuleHandle,
-                "FreeLibrary");
+                "FreeLibraryAndExitThread");
 
             _charMarshalSize = Marshal.SizeOf<char>();
         }
@@ -57,7 +66,7 @@ namespace YALLI
             if (processHandle.IsNULL())
                 return IntPtr.Zero;
 
-            var pArg = LoadArgument(
+            var pArg = PushParameter(
                 processHandle,
                 moduleName);
 
@@ -68,27 +77,7 @@ namespace YALLI
                 .CreateRemoteThreadWrapped(processHandle, _loadLibraryProc, pArg);
         }
 
-        public static bool UnloadModule(
-            Process targetProcess,
-            string moduleName)
-        {
-            throw new NotImplementedException();
-
-            Argument.IsNotNull(
-                targetProcess,
-                nameof(targetProcess));
-
-            moduleName = NormalizeModuleName(
-                moduleName);
-
-            Argument.IsNotNullOrWhitespace(
-                moduleName,
-                nameof(moduleName));
-
-            return true;
-        }
-
-        private static IntPtr LoadArgument(
+        private static IntPtr PushParameter(
             IntPtr processHandle,
             string argument)
         {
