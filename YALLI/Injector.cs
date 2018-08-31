@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using YALLI.Extensions;
 using YALLI.Win32;
 using YALLI.Win32.Flags;
 
+[assembly: InternalsVisibleTo("YALLI.UnitTests")]
 namespace YALLI
 {
     public static class Injector
@@ -72,33 +74,33 @@ namespace YALLI
                 var dwSize = new IntPtr(((argument.Length + 1) * _charMarshalSize));
                 var flAllocationType = AllocationType.Commit | AllocationType.Reserve;
 
-                var pAlloc = Kernel32.VirtualAllocEx(
+                var pAllocatedRegion = Kernel32.VirtualAllocEx(
                     processHandle,
                     IntPtr.Zero,
                     dwSize,
                     flAllocationType,
                     MemoryProtection.ReadWrite);
 
-                if (pAlloc.IsNULL())
+                if (pAllocatedRegion.IsNULL())
                     return IntPtr.Zero;
 
                 byte[] buffer = Encoding.UTF8.GetBytes(argument);
 
                 Kernel32.WriteProcessMemory(
                     processHandle,
-                    pAlloc,
+                    pAllocatedRegion,
                     buffer,
                     dwSize,
                     out int bytesWritten);
 
-                return pAlloc;
+                return pAllocatedRegion;
             }
             catch { }
 
             return IntPtr.Zero;
         }
 
-        private static string NormalizeModuleName(
+        internal static string NormalizeModuleName(
             string moduleName)
         {
             if (string.IsNullOrWhiteSpace(moduleName))

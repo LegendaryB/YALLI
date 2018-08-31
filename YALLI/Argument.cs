@@ -20,8 +20,10 @@ namespace YALLI
             string paramName,
             string message = "")
         {
-            if (string.IsNullOrEmpty(param))
-                throw new ArgumentNullException(
+            IsNotNull(param, paramName, message);
+
+            if (string.IsNullOrWhiteSpace(param))
+                throw new ArgumentException(
                     paramName,
                     message);
         }
