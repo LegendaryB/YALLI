@@ -65,6 +65,18 @@ namespace YALLI
                 .CreateRemoteThreadWrapped(processHandle, _loadLibraryProc, pArg);
         }
 
+        public static void ExecuteProc(
+            Process targetProcess,
+            IntPtr procAddr,
+            IntPtr paramsAddr)
+        {
+            IntPtr hThreadId;
+            var hThread = Kernel32.CreateRemoteThreadWrapped(targetProcess.Handle, procAddr, paramsAddr);
+            Kernel32.WaitForSingleObject(hThread, unchecked((uint)-1));
+            uint exitCode;
+            Kernel32.GetExitCodeThread(hThread, out exitCode);
+        }
+
         private static IntPtr PushArgument(
             IntPtr processHandle,
             string argument)

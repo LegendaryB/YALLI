@@ -45,22 +45,30 @@ namespace YALLI.Win32
             IntPtr lpStartAddress,
             IntPtr lpParameter,
             uint dwCreationFlags,
-            IntPtr lpThreadId);
+            out IntPtr lpThreadId);
 
         internal static IntPtr CreateRemoteThreadWrapped(
             IntPtr hProcess,
             IntPtr lpStartAddress,
             IntPtr lpParameter)
         {
+            IntPtr hThreadId;
+
             return CreateRemoteThread(
                 hProcess, 
                 IntPtr.Zero, 
                 0, 
                 lpStartAddress, 
                 lpParameter, 
-                0, 
-                IntPtr.Zero);
+                0,
+                out hThreadId);
         }
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        internal static extern uint WaitForSingleObject(IntPtr hHandle, uint dwMilliseconds);
+
+        [DllImport("kernel32.dll")]
+        internal static extern bool GetExitCodeThread(IntPtr hThread, out uint lpExitCode);
 
         [DllImport("kernel32.dll")]
         internal static extern bool CloseHandle(
