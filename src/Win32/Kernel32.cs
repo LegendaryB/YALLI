@@ -1,6 +1,7 @@
-﻿using System;
+﻿using YALLI.Win32.Flags;
+
+using System;
 using System.Runtime.InteropServices;
-using YALLI.Win32.Flags;
 
 namespace YALLI.Win32
 {

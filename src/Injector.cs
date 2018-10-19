@@ -1,13 +1,13 @@
-﻿using System;
+﻿using YALLI.Extensions;
+using YALLI.Win32;
+using YALLI.Win32.Flags;
+
+using System;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
-using YALLI.Extensions;
-using YALLI.Win32;
-using YALLI.Win32.Flags;
 
-[assembly: InternalsVisibleTo("YALLI.UnitTests")]
 namespace YALLI
 {
     public static class Injector
@@ -63,18 +63,6 @@ namespace YALLI
 
             return Kernel32
                 .CreateRemoteThreadWrapped(processHandle, _loadLibraryProc, pArg);
-        }
-
-        public static void ExecuteProc(
-            Process targetProcess,
-            IntPtr procAddr,
-            IntPtr paramsAddr)
-        {
-            IntPtr hThreadId;
-            var hThread = Kernel32.CreateRemoteThreadWrapped(targetProcess.Handle, procAddr, paramsAddr);
-            Kernel32.WaitForSingleObject(hThread, unchecked((uint)-1));
-            uint exitCode;
-            Kernel32.GetExitCodeThread(hThread, out exitCode);
         }
 
         private static IntPtr PushArgument(
