@@ -61,8 +61,17 @@ namespace YALLI
             if (pArg.IsNULL())
                 return IntPtr.Zero;
 
-            return Kernel32
-                .CreateRemoteThreadWrapped(processHandle, _loadLibraryProc, pArg);
+            var remoteThreadPointer = Kernel32.CreateRemoteThreadWrapped(processHandle, _loadLibraryProc, pArg);
+
+            // Free the previously allocated memory
+
+            FreeMemory(processHandle, moduleName);
+
+            // Close the previously opened handle
+
+            Kernel32.CloseHandle(processHandle);
+
+            return remoteThreadPointer;
         }
 
         private static IntPtr PushArgument(
@@ -98,6 +107,15 @@ namespace YALLI
             catch { }
 
             return IntPtr.Zero;
+        }
+
+        private static void FreeMemory(IntPtr processHandle, string dllName)
+        {
+            var dllNameSize = dllName.Length + 1;
+
+            // Free memory at specified address
+
+            Kernel32.VirtualFreeEx(processHandle, IntPtr.Zero, dllNameSize, 0x8000);
         }
 
         internal static string NormalizeModuleName(

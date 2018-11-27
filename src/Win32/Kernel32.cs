@@ -71,6 +71,9 @@ namespace YALLI.Win32
         [DllImport("kernel32.dll")]
         internal static extern bool GetExitCodeThread(IntPtr hThread, out uint lpExitCode);
 
+	    [DllImport("kernel32.dll")]
+        internal static extern void VirtualFreeEx(IntPtr hProcess, IntPtr lpAddress, int dwSize, uint dwFreeType);
+
         [DllImport("kernel32.dll")]
         internal static extern bool CloseHandle(
             IntPtr hObject);
