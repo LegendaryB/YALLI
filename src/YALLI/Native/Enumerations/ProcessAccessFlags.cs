@@ -1,9 +1,9 @@
 ﻿using System;
 
-namespace YALLI.Win32.Flags
+namespace YALLI.Native.Enumerations
 {
     [Flags]
-    internal enum ProcessAccess : uint
+    internal enum ProcessAccessFlags : uint
     {
         PROCESS_ALL_ACCESS = 0x1F0FFF,
         PROCESS_CREATE_PROCESS = 0x80,

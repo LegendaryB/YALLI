@@ -1,142 +1,145 @@
-﻿using YALLI.Extensions;
-using YALLI.Win32;
-using YALLI.Win32.Flags;
-
-using System;
+﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
+using System.Linq;
 using System.Text;
+
+using YALLI.Extensions;
+using YALLI.Native;
+using YALLI.Native.Enumerations;
+using YALLI.Native.PInvoke;
 
 namespace YALLI
 {
     public static class Injector
     {
-        private const ProcessAccess DESIRED_PROCESS_ACCESS =
-            ProcessAccess.PROCESS_CREATE_THREAD |
-            ProcessAccess.PROCESS_QUERY_INFORMATION |
-            ProcessAccess.PROCESS_VM_OPERATION |
-            ProcessAccess.PROCESS_VM_READ |
-            ProcessAccess.PROCESS_VM_WRITE;
+        private const ProcessAccessFlags DESIRED_PROCESS_ACCESS =
+            ProcessAccessFlags.PROCESS_CREATE_THREAD |
+            ProcessAccessFlags.PROCESS_QUERY_INFORMATION |
+            ProcessAccessFlags.PROCESS_VM_OPERATION |
+            ProcessAccessFlags.PROCESS_VM_READ |
+            ProcessAccessFlags.PROCESS_VM_WRITE;
 
-        private static readonly IntPtr _loadLibraryProc;
-        private static readonly int _charMarshalSize;
-
-        static Injector()
+        public static IntPtr Inject(
+            string processName,
+            string dllPath)
         {
-            var kernel32ModuleHandle = Kernel32.GetModuleHandle(
-                "kernel32.dll");
-
-            _loadLibraryProc = Kernel32.GetProcAddress(
-                kernel32ModuleHandle,
-                "LoadLibraryA");
-
-            _charMarshalSize = Marshal.SizeOf<char>();
+            return Inject(
+                processName,
+                (processes) => processes.FirstOrDefault(),
+                dllPath);
         }
 
-        public static IntPtr LoadModule(
-            Process targetProcess,
-            string moduleName)
+        public static IntPtr Inject(
+            string processName,
+            Func<Process[], Process> processResolver,
+            string dllPath)
         {
-            Argument.IsNotNull(
-                targetProcess,
-                nameof(targetProcess));
+            if (string.IsNullOrWhiteSpace(processName))
+                throw new ArgumentException($"'{nameof(processName)}' cannot be null or whitespace.", nameof(processName));
 
-            moduleName = NormalizeModuleName(
-                moduleName);
+            if (processResolver is null)
+                throw new ArgumentNullException(nameof(processResolver));
 
-            Argument.IsNotNullOrWhitespace(
-                moduleName,
-                nameof(moduleName));
+            if (string.IsNullOrWhiteSpace(dllPath))
+                throw new ArgumentException($"'{nameof(dllPath)}' cannot be null or whitespace.", nameof(dllPath));
 
-            var processHandle = GetProcessHandle(targetProcess);
+            var processes = Process.GetProcessesByName(processName);
+            var process = processResolver(processes);
 
-            if (processHandle.IsNULL())
-                return IntPtr.Zero;
+            if (process == null)
+                throw new InvalidOperationException($"Could not retrieve process by the given process resolver function.");
 
-            var pArg = PushArgument(
-                processHandle,
-                moduleName);
-
-            if (pArg.IsNULL())
-                return IntPtr.Zero;
-
-            var remoteThreadPointer = Kernel32.CreateRemoteThreadWrapped(processHandle, _loadLibraryProc, pArg);
-
-            // Free the previously allocated memory
-
-            FreeMemory(processHandle, moduleName);
-
-            // Close the previously opened handle
-
-            Kernel32.CloseHandle(processHandle);
-
-            return remoteThreadPointer;
+            return Inject(
+                process,
+                dllPath);
         }
 
-        private static IntPtr PushArgument(
-            IntPtr processHandle,
-            string argument)
+        public static IntPtr Inject(
+            int processId,
+            string dllPath)
         {
-            try
-            {
-                var dwSize = new IntPtr(((argument.Length + 1) * _charMarshalSize));
-                var flAllocationType = AllocationType.Commit | AllocationType.Reserve;
+            if (processId < 0)
+                throw new ArgumentException($"'{nameof(processId)}' cannot be negative.", nameof(processId));
 
-                var pAllocatedRegion = Kernel32.VirtualAllocEx(
-                    processHandle,
-                    IntPtr.Zero,
-                    dwSize,
-                    flAllocationType,
-                    MemoryProtection.ReadWrite);
+            if (string.IsNullOrWhiteSpace(dllPath))
+                throw new ArgumentException($"'{nameof(dllPath)}' cannot be null or whitespace.", nameof(dllPath));
 
-                if (pAllocatedRegion.IsNULL())
-                    return IntPtr.Zero;
+            var process = Process.GetProcessById(processId);
 
-                byte[] buffer = Encoding.UTF8.GetBytes(argument);
+            if (process == null)
+                throw new InvalidOperationException($"Could not retrieve process by the given id '{processId}'.");
 
-                Kernel32.WriteProcessMemory(
-                    processHandle,
-                    pAllocatedRegion,
-                    buffer,
-                    dwSize,
-                    out int bytesWritten);
-
-                return pAllocatedRegion;
-            }
-            catch { }
-
-            return IntPtr.Zero;
+            return Inject(
+                process,
+                dllPath);
         }
 
-        private static void FreeMemory(IntPtr processHandle, string dllName)
+        public static IntPtr Inject(
+            Process process,
+            string dllPath)
         {
-            var dllNameSize = dllName.Length + 1;
+            if (process is null)
+                throw new ArgumentNullException(nameof(process));
 
-            // Free memory at specified address
+            if (string.IsNullOrWhiteSpace(dllPath))
+                throw new ArgumentException($"'{nameof(dllPath)}' cannot be null or whitespace.", nameof(dllPath));
 
-            Kernel32.VirtualFreeEx(processHandle, IntPtr.Zero, dllNameSize, 0x8000);
-        }
+            dllPath = NormalizeDllPath(dllPath);
 
-        internal static string NormalizeModuleName(
-            string moduleName)
-        {
-            if (string.IsNullOrWhiteSpace(moduleName))
-                return moduleName;
-
-            if (!moduleName.EndsWith(".dll"))
-                moduleName = $"{moduleName}.dll";
-
-            return moduleName.ToUpper();
-        }
-
-        private static IntPtr GetProcessHandle(
-            Process process)
-        {
-            return Kernel32.OpenProcess(
+            var hProcess = Kernel32.OpenProcess(
                 DESIRED_PROCESS_ACCESS,
                 false,
-                process.Id);
+                (uint)process.Id);
+
+            if (hProcess.IsDefault())
+                throw new Win32Exception($"Failed to retrieve handle for process '{process.ProcessName}'!");
+
+            var dwSize = (uint)(dllPath.Length + 1);
+
+            var pAllocatedRegion = Kernel32.VirtualAllocEx(
+                hProcess,
+                IntPtr.Zero,
+                dwSize,
+                MemoryAllocationType.MEM_COMMIT | MemoryAllocationType.MEM_RESERVE,
+                MemoryProtection.PAGE_READWRITE);
+
+            if (pAllocatedRegion.IsDefault())
+                throw new Win32Exception($"Failed to allocate memory region in the target process!");
+
+            var lpBuffer = Encoding.Default.GetBytes(dllPath);
+
+            if (!Kernel32.WriteProcessMemory(hProcess, pAllocatedRegion, lpBuffer, dwSize, out int bytesWritten))
+                throw new Win32Exception($"Failed to write process memory in the target process!");
+
+            var Kernel32Handle = Kernel32.GetModuleHandle(Lib.Kernel32);
+            var LoadLibraryProcedure = Kernel32.GetProcAddress(
+                Kernel32Handle,
+                "LoadLibraryA");
+
+            var hThread = Kernel32.CreateRemoteThread(
+                hProcess,
+                LoadLibraryProcedure,
+                pAllocatedRegion);
+
+            Kernel32.VirtualFreeEx(
+                hProcess,
+                IntPtr.Zero,
+                dllPath.Length + 1,
+                MemoryAllocationType.MEM_RESET);
+
+            Kernel32.CloseHandle(hProcess);
+
+            return hThread;
+        }
+
+        private static string NormalizeDllPath(
+            string dllPath)
+        {
+            if (!dllPath.EndsWith(".dll"))
+                dllPath = $"{dllPath}.dll";
+
+            return dllPath.ToUpper();
         }
     }
 }

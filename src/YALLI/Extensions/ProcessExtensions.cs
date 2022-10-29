@@ -9,7 +9,7 @@ namespace YALLI.Extensions
             this Process process,
             string moduleName)
         {
-            return Injector.LoadModule(
+            return Injector.Inject(
                 process,
                 moduleName);
         }

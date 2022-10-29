@@ -10,7 +10,10 @@ BOOL WINAPI DllMain(
 	switch (ul_reason_for_call)
 	{
 	case DLL_PROCESS_ATTACH:
-		MessageBox(NULL, L"HELLO WORLD!", L"HELLO WORLD!", 0);
+		TCHAR szFileName[MAX_PATH];
+
+		GetModuleFileName(NULL, szFileName, MAX_PATH);
+		MessageBox(NULL, szFileName, L"HELLO FROM:", 0);
 		break;
 
 	case DLL_THREAD_ATTACH:

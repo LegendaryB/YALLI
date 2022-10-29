@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YALLI", "src\YALLI\YALLI.cs
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NativeDll", "src\NativeDll\NativeDll.vcxproj", "{3590B3CC-DA4A-48BA-84B8-CDF3821665AD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YALLI.ConsoleApp", "src\YALLI.ConsoleApp\YALLI.ConsoleApp.csproj", "{997CE5DC-C89B-4D43-81F8-7C2664CB69FC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,18 @@ Global
 		{3590B3CC-DA4A-48BA-84B8-CDF3821665AD}.Release|x64.Build.0 = Release|x64
 		{3590B3CC-DA4A-48BA-84B8-CDF3821665AD}.Release|x86.ActiveCfg = Release|Win32
 		{3590B3CC-DA4A-48BA-84B8-CDF3821665AD}.Release|x86.Build.0 = Release|Win32
+		{997CE5DC-C89B-4D43-81F8-7C2664CB69FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{997CE5DC-C89B-4D43-81F8-7C2664CB69FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{997CE5DC-C89B-4D43-81F8-7C2664CB69FC}.Debug|x64.ActiveCfg = Debug|x64
+		{997CE5DC-C89B-4D43-81F8-7C2664CB69FC}.Debug|x64.Build.0 = Debug|x64
+		{997CE5DC-C89B-4D43-81F8-7C2664CB69FC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{997CE5DC-C89B-4D43-81F8-7C2664CB69FC}.Debug|x86.Build.0 = Debug|Any CPU
+		{997CE5DC-C89B-4D43-81F8-7C2664CB69FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{997CE5DC-C89B-4D43-81F8-7C2664CB69FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{997CE5DC-C89B-4D43-81F8-7C2664CB69FC}.Release|x64.ActiveCfg = Release|Any CPU
+		{997CE5DC-C89B-4D43-81F8-7C2664CB69FC}.Release|x64.Build.0 = Release|Any CPU
+		{997CE5DC-C89B-4D43-81F8-7C2664CB69FC}.Release|x86.ActiveCfg = Release|Any CPU
+		{997CE5DC-C89B-4D43-81F8-7C2664CB69FC}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
