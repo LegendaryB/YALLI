@@ -9,11 +9,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution", "Solution", "{81
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{55C80B95-744F-4AA1-82E9-0812701366D1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YALLI", "src\YALLI\YALLI.csproj", "{C99C4652-512D-4455-88DF-582FF67F981E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YALLI", "src\YALLI.csproj", "{C99C4652-512D-4455-88DF-582FF67F981E}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NativeDll", "samples\NativeDll\NativeDll.vcxproj", "{3590B3CC-DA4A-48BA-84B8-CDF3821665AD}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NativeDll", "src\NativeDll\NativeDll.vcxproj", "{3590B3CC-DA4A-48BA-84B8-CDF3821665AD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -50,9 +48,6 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{3590B3CC-DA4A-48BA-84B8-CDF3821665AD} = {55C80B95-744F-4AA1-82E9-0812701366D1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {662B8287-B7CE-4E10-AF5D-1946FA76DC99}
