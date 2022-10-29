@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27703.2047
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution", "Solution", "{81DB34CC-C58A-47A8-8EE0-0894F37E635F}"
 	ProjectSection(SolutionItems) = preProject
@@ -10,10 +10,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution", "Solution", "{81
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{55C80B95-744F-4AA1-82E9-0812701366D1}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InjectManagedDll", "samples\InjectManagedDll\InjectManagedDll.csproj", "{C24D48C9-5F92-4F50-B1B8-B373054A482F}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InjectDll", "samples\InjectDll\InjectDll.csproj", "{B35D6676-1CDE-4BCA-85FF-6EBBA98DCCAE}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YALLI", "src\YALLI.csproj", "{C99C4652-512D-4455-88DF-582FF67F981E}"
 EndProject
@@ -29,30 +25,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{C24D48C9-5F92-4F50-B1B8-B373054A482F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C24D48C9-5F92-4F50-B1B8-B373054A482F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C24D48C9-5F92-4F50-B1B8-B373054A482F}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{C24D48C9-5F92-4F50-B1B8-B373054A482F}.Debug|x64.Build.0 = Debug|Any CPU
-		{C24D48C9-5F92-4F50-B1B8-B373054A482F}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{C24D48C9-5F92-4F50-B1B8-B373054A482F}.Debug|x86.Build.0 = Debug|Any CPU
-		{C24D48C9-5F92-4F50-B1B8-B373054A482F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C24D48C9-5F92-4F50-B1B8-B373054A482F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C24D48C9-5F92-4F50-B1B8-B373054A482F}.Release|x64.ActiveCfg = Release|Any CPU
-		{C24D48C9-5F92-4F50-B1B8-B373054A482F}.Release|x64.Build.0 = Release|Any CPU
-		{C24D48C9-5F92-4F50-B1B8-B373054A482F}.Release|x86.ActiveCfg = Release|Any CPU
-		{C24D48C9-5F92-4F50-B1B8-B373054A482F}.Release|x86.Build.0 = Release|Any CPU
-		{B35D6676-1CDE-4BCA-85FF-6EBBA98DCCAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B35D6676-1CDE-4BCA-85FF-6EBBA98DCCAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B35D6676-1CDE-4BCA-85FF-6EBBA98DCCAE}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{B35D6676-1CDE-4BCA-85FF-6EBBA98DCCAE}.Debug|x64.Build.0 = Debug|Any CPU
-		{B35D6676-1CDE-4BCA-85FF-6EBBA98DCCAE}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{B35D6676-1CDE-4BCA-85FF-6EBBA98DCCAE}.Debug|x86.Build.0 = Debug|Any CPU
-		{B35D6676-1CDE-4BCA-85FF-6EBBA98DCCAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B35D6676-1CDE-4BCA-85FF-6EBBA98DCCAE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B35D6676-1CDE-4BCA-85FF-6EBBA98DCCAE}.Release|x64.ActiveCfg = Release|Any CPU
-		{B35D6676-1CDE-4BCA-85FF-6EBBA98DCCAE}.Release|x64.Build.0 = Release|Any CPU
-		{B35D6676-1CDE-4BCA-85FF-6EBBA98DCCAE}.Release|x86.ActiveCfg = Release|Any CPU
-		{B35D6676-1CDE-4BCA-85FF-6EBBA98DCCAE}.Release|x86.Build.0 = Release|Any CPU
 		{C99C4652-512D-4455-88DF-582FF67F981E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C99C4652-512D-4455-88DF-582FF67F981E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C99C4652-512D-4455-88DF-582FF67F981E}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -80,8 +52,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{C24D48C9-5F92-4F50-B1B8-B373054A482F} = {55C80B95-744F-4AA1-82E9-0812701366D1}
-		{B35D6676-1CDE-4BCA-85FF-6EBBA98DCCAE} = {55C80B95-744F-4AA1-82E9-0812701366D1}
 		{3590B3CC-DA4A-48BA-84B8-CDF3821665AD} = {55C80B95-744F-4AA1-82E9-0812701366D1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution

@@ -1,16 +1,19 @@
-# YALLI — Yet another load library injector
+<div align="center">
+
+<h1>YALLI — Yet another LoadLibrary injector</h1>
+
 [![forthebadge](https://forthebadge.com/images/badges/made-with-c-sharp.svg)](https://forthebadge.com)
 [![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com)
 
-[![GitHub license](https://img.shields.io/github/license/dbelz/YALLI.svg)](https://github.com/dbelz/YALLI/blob/master/LICENSE.md)
+[![GitHub license](https://img.shields.io/github/license/LegendaryB/YALLI.svg)](https://github.com/LegendaryB/YALLI/blob/master/LICENSE.md)
 
+Yet another LoadLibrary injector. Nothing fancy, but here you go.
+</div><br>
 
-YALLI is a simple dll injector which uses LoadLibrary in combination with CreateRemoteThread. Nothing fancy.
+## 🎯 Features
+*
 
-### Authors
+## 📝 Usage
 
-- Daniel Belz
-
-## License
-
-This project is licensed under the MIT - see the [LICENSE.md](LICENSE.md) file for details
+```csharp
+```
