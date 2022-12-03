@@ -15,11 +15,14 @@ Yet another LoadLibrary injector. Nothing fancy, but here you go.
 Reference the NuGet package in your application. After that you can use the library.
 
 ```csharp
+var processName = "notepad";
+var dllPath = "C:\\Users\\LegendaryB\\Desktop\\Test.dll";
+
 // Injects into the first found notepad process
-Injector.Inject("notepad", "C:\\Users\\LegendaryB\\Desktop\\Test.dll");
+Injector.Inject(processName, dllPath);
 
 // Injects into the matching process
-Injector.Inject("notepad", (processes) => {
+Injector.Inject(processName, (processes) => {
 	foreach (var process in processes) {
 		if (process.MainModule.FileName.Contains("example")) {
 			return process;
@@ -28,14 +31,14 @@ Injector.Inject("notepad", (processes) => {
 
 	return null;
 },
-"C:\\Users\\LegendaryB\\Desktop\\Test.dll");
+dllPath);
 
 // Injects into the process with the given id
-Injector.Inject(3212, "C:\\Users\\LegendaryB\\Desktop\\Test.dll");
+Injector.Inject(3212, dllPath);
 
 // Injects into the process referenced by the given process object
-var process = Process.GetProcessesByName("notepad");
-Injector.Inject(process[0], "C:\\Users\\LegendaryB\\Desktop\\Test.dll");
+var process = Process.GetProcessesByName(processName);
+Injector.Inject(process[0], dllPath);
 ```
 
 ## 📝 Usage of the console application
