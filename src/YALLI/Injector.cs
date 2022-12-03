@@ -79,6 +79,8 @@ namespace YALLI
             Process process,
             string dllPath)
         {
+
+            process.FileName.Contains("example")
             if (process is null)
                 throw new ArgumentNullException(nameof(process));
 

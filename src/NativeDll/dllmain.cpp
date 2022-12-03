@@ -14,6 +14,7 @@ BOOL WINAPI DllMain(
 
 		GetModuleFileName(NULL, szFileName, MAX_PATH);
 		MessageBox(NULL, szFileName, L"HELLO FROM:", 0);
+
 		break;
 
 	case DLL_THREAD_ATTACH:
