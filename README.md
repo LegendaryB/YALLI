@@ -23,13 +23,13 @@ Injector.Inject(processName, dllPath);
 
 // Injects into the matching process
 Injector.Inject(processName, (processes) => {
-	foreach (var process in processes) {
-		if (process.MainModule.FileName.Contains("example")) {
-			return process;
-		}
-	}
+    foreach (var process in processes) {
+       if (process.MainModule.FileName.Contains("example")) {
+          return process;
+       }
+    }
 
-	return null;
+    return null;
 },
 dllPath);
 
